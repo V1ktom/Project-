@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <table id="todoTable" bgcolor="black" width="150">
+    <tr bgcolor="grey">
+      <th width="100">To-do</th>
+      <th width="50">Delete</th>
+      <th witdth="100">Zuständig</th>
+    </tr>
+  </table>
+
+  <button onclick="addTodo()">Add</button>
+
+  <script>
+    let todoCount = 1; 
+
+    function remove(Id) {
+      var row = document.getElementById(Id); 
+      row.remove();  
+    }
+
+    function addTodo() {
+      const row = document.createElement("tr");
+      row.setAttribute("id", "row" + todoCount);  
+      row.setAttribute("bgcolor", "lightgrey");
+      row.setAttribute("align", "center");
+
+      const tdTodo = document.createElement("td");
+      const divTodo = document.createElement("div");
+      divTodo.classList.add("todo");
+
+      const textarea = document.createElement("textarea");
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+
+      divTodo.appendChild(textarea);
+      divTodo.appendChild(checkbox);
+      tdTodo.appendChild(divTodo);
+
+      const tdAction = document.createElement("td");
+      const button = document.createElement("button");
+      button.textContent = "Delete";
+      button.onclick = function() {
+        remove(row.id);  
+      };
+
+      tdAction.appendChild(button);
+
+      row.appendChild(tdTodo);
+      row.appendChild(tdAction);
+
+      document.getElementById("todoTable").appendChild(row);
+
+      todoCount++;  
+    }
+  </script>
+</body>
+</html>

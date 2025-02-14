@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo Liste</title>
+</head>
+<body>
+  <div class="container">
+    <div class="todo" id="1">   
+      <input class="todo__value" type="text" placeholder="">
+      <input class="__checkbpox" type="checkbox">
+    </div>
+    <button onclick="remove('1')">Delete</button>
+
+    <div class="todo" id="2">   
+      <input class="todo__value" type="text" placeholder="">
+      <input class="__checkbpox" type="checkbox">
+    </div>
+    <button onclick="remove('2')">Delete</button>
+
+    <div class="todo" id="3">   
+      <input class="todo__value" type="text" placeholder="">
+      <input class="__checkbpox" type="checkbox">
+    </div>
+    <button onclick="remove('3')">Delete</button>
+
+    <div class="todo" id="4">   
+      <input class="todo__value" type="text" placeholder="">
+      <input class="__checkbpox" type="checkbox">
+    </div>
+    <button onclick="remove('4')">Delete</button>
+
+    <button onclick="addTodo()">Add</button>
+
+    <script>
+      function remove(Id) {
+        var element = document.getElementById(Id);
+        element.remove(); 
+      }
+
+      let todoCount = 4; 
+
+      function addTodo() {
+        todoCount++;
+
+        const newTodo = document.createElement('div');
+        newTodo.classList.add('todo');
+        newTodo.id = todoCount; 
+
+        const input = document.createElement('input');
+        input.classList.add('todo__value');
+        input.type = 'text';
+        input.placeholder = '';
+
+        const checkbox = document.createElement('input');
+        checkbox.classList.add('__checkbpox');
+        checkbox.type = 'checkbox';
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = function() {
+          remove(newTodo.id); 
+        };
+
+        newTodo.appendChild(input);
+        newTodo.appendChild(checkbox);
+        newTodo.appendChild(deleteButton);
+
+        document.querySelector('.container').appendChild(newTodo);
+      }
+    </script>
+    
+</body>
+</html>

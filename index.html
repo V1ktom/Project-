@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V-app Uhr</title>
+  <style>
+    body {
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center; 
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      flex-direction: column;
+    }
+
+    .clock {
+      background: #444;
+      color: #fff; 
+      padding: 20px 40px;
+      border-radius: 10px;
+      font-size: 3rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin: 10px;
+    }
+
+    h1, h3 {
+      text-align: center;
+    }
+
+    textarea {
+      margin-top: 20px;
+      padding: 10px;
+      width: 300px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="viennaTime" class="clock">Wien: 00:00:00</div>
+  <div id="newYorkTime" class="clock">New York: 00:00:00</div>
+
+  <h1>Zeitzonen</h1>
+  
+  <!-- Datalist zur Zeitzonenauswahl -->
+  <form>
+    <label for="timezoneInput"></label>
+    <input list="timezones" id="timezoneInput" name="timezone" placeholder="...">
+    <datalist id="timezones">
+      <option value="Europe/Berlin">
+      <option value="Asia/Tokyo">
+      <option value="Asia/Dhaka">
+      <option value="America/Los_Angeles">
+      <option value="Europe/Paris">
+      <option value="America/Denver">
+      <option value="Australia/Sydney">
+    </datalist>
+    <button type="button" onclick="showTimeFromInput()">Anzeigen</button>
+  </form>
+
+  <p id="timeDisplay"></p>
+  
+  <!-- Radio Buttons zur Zeitzonenauswahl -->
+  <h3>wählen</h3> <label>
+    <input type="radio" name="timezoneRadio" value="Asia/Tokyo"> Asia/Tokyo
+  </label><br>
+  <label>
+    <input type="radio" name="timezoneRadio" value="Europe/Berlin"> Europe/Berlin
+  </label><br>
+  <label>
+    <input type="radio" name="timezoneRadio" value="Australia/Sydney"> Australia/Sydney
+  </label><br>
+
+  <!-- Button für den Radio-Button -->
+  <button type="button" onclick="showTimeFromRadio()">Set</button>
+
+  <script>
+    function updateClock() {
+      // Aktuelle Zeit für Wien und New York berechnen
+      const viennaTime = new Date().toLocaleString("de-DE", { timeZone: "Europe/Vienna" });
+      const newYorkTime = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+
+      // Zeitanzeige aktualisieren
+      document.getElementById('viennaTime').textContent = "Wien: " + viennaTime;
+      document.getElementById('newYorkTime').textContent = "New York: " + newYorkTime;
+    }
+
+    // Uhrzeit sofort anzeigen und dann jede Sekunde aktualisieren
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    function showTimeFromInput() {
+      var timezone = document.getElementById("timezoneInput").value; // Zeitzone aus dem Eingabefeld holen
+
+      // Prüfen, ob eine Zeitzone ausgewählt wurde
+      if (timezone) {
+        try {
+          // Formatieren der Zeit für die ausgewählte Zeitzone
+          var formatter = new Intl.DateTimeFormat("de-DE", {
+            timeZone: timezone,
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+          });
+          var currentTime = formatter.format(new Date());
+          document.getElementById("timeDisplay").innerHTML = `${timezone}: ${currentTime}`;
+        } catch (e) {
+          document.getElementById("timeDisplay").innerHTML = "Ungültige Zeitzone.";
+        }
+      } else {
+        document.getElementById("timeDisplay").innerHTML = "Bitte eine gültige Zeitzone auswählen.";
+      }
+    }
+
+    function showTimeFromRadio() {
+      var radios = document.getElementsByName("timezoneRadio"); // Alle Radio-Buttons abrufen
+      var selectedTimezone = null;
+
+      // Durch alle Radio-Buttons iterieren und den ausgewählten finden
+      for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+          selectedTimezone = radios[i].value;
+          break;
+        }
+      }
+
+      // Wenn eine Zeitzone ausgewählt wurde, Zeit anzeigen
+      if (selectedTimezone) {
+        try {
+          // Formatieren der Zeit für die ausgewählte Zeitzone
+          var formatter = new Intl.DateTimeFormat("de-DE", {
+            timeZone: selectedTimezone,
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+          });
+          var currentTime = formatter.format(new Date());
+          document.getElementById("timeDisplay").innerHTML = `${selectedTimezone}: ${currentTime}`;
+        } catch (e) {
+          document.getElementById("timeDisplay").innerHTML = "Ungültige Zeitzone.";
+        }
+      } else {
+        document.getElementById("timeDisplay").innerHTML = "Ungültige Zeitzone.";
+      }
+    }
+  </script>
+  <textarea></textarea>
+
+</body>
+</html>
